@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH -p jic-training
+#SBATCH -t 2-00:00
+#SBATCH -c 4
+#SBATCH --mem=50000
+#SBATCH -o fastqctrainingresults.%N.%j.out
+#SBATCH -e fastqctrainingresults.%N.%j.err
+#SBATCH --mail-user=ismael.gutierrez-fernandez\@jic.ac.uk
+#SBATCH --mail-type=END,FAIL
+
+source package /nbi/software/production/bin/fastqc-0.11.8
+
+# path to fastq.gz files
+cd /jic/scratch/groups/Philippa-Borrill/raw_data/example_RNA_seq/fastq/Sample_1424_LIB17061_LDI14174
+
+# run the fastqc loop and save them in an specific folder
+for f in *fastq.gz; do srun fastqc *.fastq.gz -o /hpc-home/zik25cof/rna-training/fastqc_results *.fastq.gz -t 4 $f; done
